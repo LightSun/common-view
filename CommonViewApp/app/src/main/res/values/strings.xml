@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CommonViewApp</string>
+
+    <string name="already_finish">已完成</string>
+    <string name="all">全部</string>
+    <string name="doing">进行中</string>
+    <string name="wait_settle">待结算</string>
+    <string name="exception_ing">异常中</string>
+</resources>
