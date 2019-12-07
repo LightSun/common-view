@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,7 +8,9 @@
     <org.heaven7.core.view.SlidingTabLayout
         android:id="@+id/slidingTab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:sliding_tl_fill_viewport="true"
+        >
     </org.heaven7.core.view.SlidingTabLayout>
 
     <android.support.v4.view.ViewPager

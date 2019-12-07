@@ -44,4 +44,8 @@
         <!-- 星星是否响应事件 默认为true 表示仅作为展示 -->
         <attr name="isIndicator" format="boolean|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="SlidingTabLayout">
+        <attr name="sliding_tl_fill_viewport" format="boolean|reference"/>
+    </declare-styleable>
 </resources>

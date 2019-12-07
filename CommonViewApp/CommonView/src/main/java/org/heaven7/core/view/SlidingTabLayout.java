@@ -17,6 +17,7 @@
 package org.heaven7.core.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -133,8 +134,19 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         // Disable the Scroll Bar
         setHorizontalScrollBarEnabled(false);
+
+        if(attrs != null){
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SlidingTabLayout);
+            try {
+                boolean value = a.getBoolean(R.styleable.SlidingTabLayout_sliding_tl_fill_viewport, false);
+                setFillViewport(value);
+            }finally {
+                a.recycle();
+            }
+        }
         // Make sure that the Tab Strips fills this View
-        setFillViewport(true);
+        //if set true. the content gravity will changed .
+        //setFillViewport(true);
 
         mTitleOffset = (int) (TITLE_OFFSET_DIPS * getResources().getDisplayMetrics().density);
 
