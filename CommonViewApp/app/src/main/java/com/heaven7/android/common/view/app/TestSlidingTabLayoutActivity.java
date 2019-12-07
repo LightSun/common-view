@@ -68,7 +68,7 @@ public class TestSlidingTabLayoutActivity extends BaseActivity {
 
     private void initSlidingTabLayout() {
         FragmentActivity activity = this;
-        mSlidingTabLayout.setDrawBottomUnderLine(true);
+        mSlidingTabLayout.setDrawBottomUnderLine(false);
         mSlidingTabLayout.setDrawHorizontalIndicator(true);
         mSlidingTabLayout.setSelectIndicatorHeight(DimenUtil.dip2px(activity, 2));
         mSlidingTabLayout.setSelectRelativeTextColorsRes(R.color.colorTheme, R.color.colorSecond);
