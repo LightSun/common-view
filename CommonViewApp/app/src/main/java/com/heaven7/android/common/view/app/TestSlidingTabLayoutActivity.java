@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.heaven7.adapter.BaseFragmentPagerAdapter;
 import com.heaven7.android.common.view.app.frag.SlidingTabFragment;
@@ -89,6 +90,11 @@ public class TestSlidingTabLayoutActivity extends BaseActivity {
             public void onPageSelected(int position) {
                 //  Logger.d(TAG, "onPageSelected", "position = " + position);
                 mSlidingTabLayout.toogleSelect(position);
+                List<TextView> tvs = mSlidingTabLayout.getTitleTextViews();
+                for (int i = 0, size = tvs.size() ; i < size ; i ++){
+                    TextView tv = tvs.get(i);
+                    tv.getPaint().setFakeBoldText(i == position);
+                }
             }
         });
         mSlidingTabLayout.setTabDecoration(new SlidingTabLayout.TabDecoration() {

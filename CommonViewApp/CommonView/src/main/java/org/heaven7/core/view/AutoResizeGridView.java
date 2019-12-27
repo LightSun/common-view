@@ -4,6 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
 
+/**
+ * <p>Use RecyclerView instead.</p>
+ */
+@Deprecated
 public class AutoResizeGridView extends GridView {
 
 	public AutoResizeGridView(Context context, AttributeSet attrs) {

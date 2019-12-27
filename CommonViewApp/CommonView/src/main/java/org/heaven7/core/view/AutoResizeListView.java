@@ -6,8 +6,9 @@ import android.util.AttributeSet;
 import android.widget.ListView;
 
 /**
- * Created by heaven7 on 2015/8/24.
+ * <p>Use RecyclerView instead.</p>
  */
+@Deprecated
 public class AutoResizeListView extends ListView {
     public AutoResizeListView(Context context) {
         super(context);

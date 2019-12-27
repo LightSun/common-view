@@ -48,4 +48,15 @@
     <declare-styleable name="SlidingTabLayout">
         <attr name="sliding_tl_fill_viewport" format="boolean|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="ContainerLayout">
+        <attr name="iiv_titleStyle" format="reference" />
+        <attr name="iiv_itemStyle" format="reference" />
+        <!-- the tile or item space  -->
+        <attr name="iiv_title_space" format="dimension|reference" />
+        <attr name="iiv_item_space" format="dimension|reference" />
+        <!-- optional -->
+        <attr name="iiv_titleBold" format="boolean|reference" />
+        <attr name="iiv_align_key" format="boolean|reference" />
+    </declare-styleable>
 </resources>

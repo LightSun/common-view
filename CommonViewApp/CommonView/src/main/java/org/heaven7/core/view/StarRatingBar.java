@@ -165,8 +165,10 @@ public class StarRatingBar extends View {
     }
 
     public void setRating(float rating){
-        this.mRating = rating;
-        invalidate();
+        if(this.mRating != rating){
+            this.mRating = rating;
+            invalidate();
+        }
     }
 
     public int getNumStars() {
