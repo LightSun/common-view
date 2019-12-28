@@ -1,5 +1,6 @@
 package org.heaven7.core.view.container;
 
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -28,7 +29,7 @@ public class OrientationsContainer extends OutInContainer {
     }
 
     @Override
-    protected ViewGroup createOutView(ViewGroup parent) {
+    protected ViewGroup createOutView(ViewGroup parent, LayoutInflater inflater) {
         LinearLayout ll = new LinearLayout(parent.getContext());
         ll.setOrientation(outOrientation);
         ll.setLayoutParams(generateOutLayoutParams());
@@ -36,7 +37,7 @@ public class OrientationsContainer extends OutInContainer {
     }
 
     @Override
-    protected ViewGroup createInView(ViewGroup parent) {
+    protected ViewGroup createInView(ViewGroup parent, LayoutInflater inflater) {
         LinearLayout ll = new LinearLayout(parent.getContext());
         ll.setOrientation(inOrientation);
         ll.setLayoutParams(generateInLayoutParams());

@@ -6,25 +6,35 @@ import android.view.ViewGroup;
 
 import org.heaven7.core.view.FlowLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MultiContainer extends BaseContainer {
 
     private List<Container> cells;
 
-    public MultiContainer(List<Container> cells) {
-        this.cells = cells;
+    public MultiContainer(){
+        this.cells = new ArrayList<>();
+    }
+    public List<Container> getContainers(){
+        return cells;
+    }
+    public void addContainer(Container container){
+        cells.add(container);
+    }
+    public void removeContainer(Container container){
+        cells.remove(container);
     }
 
-    protected ViewGroup createLayout(ViewGroup parent) {
+    protected ViewGroup createLayout(ViewGroup parent, LayoutInflater inflater) {
         return new FlowLayout(parent.getContext());
     }
 
     @Override
-    protected View onCreateView(ViewGroup parent, LayoutInflater layoutInflater) {
-        ViewGroup layout = createLayout(parent);
+    protected View onCreateView(ViewGroup parent, LayoutInflater inflater) {
+        ViewGroup layout = createLayout(parent, inflater);
         for (Container cell : cells) {
-            layout.addView(cell.getView(layout, layoutInflater));
+            layout.addView(cell.getView(layout, inflater));
         }
         return layout;
     }

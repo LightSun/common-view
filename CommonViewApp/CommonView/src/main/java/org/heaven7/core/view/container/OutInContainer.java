@@ -17,19 +17,19 @@ public abstract class OutInContainer extends BaseContainer {
     public List<List<Container>> getContainers() {
         return grid;
     }
-    protected abstract ViewGroup createOutView(ViewGroup parent);
+    protected abstract ViewGroup createOutView(ViewGroup parent, LayoutInflater inflater);
 
-    protected abstract ViewGroup createInView(ViewGroup parent);
+    protected abstract ViewGroup createInView(ViewGroup parent, LayoutInflater inflater);
 
     @Override
-    public View onCreateView(ViewGroup parent, LayoutInflater layoutInflater) {
-        ViewGroup outView = createOutView(parent);
+    public View onCreateView(ViewGroup parent, LayoutInflater inflater) {
+        ViewGroup outView = createOutView(parent, inflater);
         for (int size1 = grid.size(), i = 0; i < size1; i++) {
             List<Container> list = grid.get(i);
-            ViewGroup child = createInView(outView);
+            ViewGroup child = createInView(outView, inflater);
             for (int size2 = list.size(), j = 0; j < size2; j++) {
                 Container column = list.get(j);
-                child.addView(column.getView(child, layoutInflater));
+                child.addView(column.getView(child, inflater));
             }
             outView.addView(child);
         }

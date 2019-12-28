@@ -1,16 +1,15 @@
 package org.heaven7.core.view.container;
 
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
-import java.util.List;
 
 import static android.widget.LinearLayout.HORIZONTAL;
 
 public class HorizontalContainer extends MultiContainer {
 
-    public HorizontalContainer(List<Container> cells) {
-        super(cells);
+    public HorizontalContainer() {
+        super();
     }
 
     protected ViewGroup.LayoutParams generateLayoutParams() {
@@ -18,7 +17,7 @@ public class HorizontalContainer extends MultiContainer {
     }
 
     @Override
-    protected ViewGroup createLayout(ViewGroup parent) {
+    protected ViewGroup createLayout(ViewGroup parent, LayoutInflater inflater) {
         LinearLayout layout = new LinearLayout(parent.getContext());
         layout.setOrientation(HORIZONTAL);
         layout.setLayoutParams(generateLayoutParams());

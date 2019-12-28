@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 public interface Container {
 
-    View getView(ViewGroup parent, LayoutInflater layoutInflater);
+    View getView(ViewGroup parent, LayoutInflater inflater);
 
     View getView();
 
