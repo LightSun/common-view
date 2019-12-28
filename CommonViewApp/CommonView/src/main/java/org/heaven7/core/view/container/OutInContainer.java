@@ -50,7 +50,7 @@ public abstract class OutInContainer extends BaseContainer {
         for (int size1 = grid.size(), i = 0; i < size1; i++) {
             List<Container> list = grid.get(i);
             for (int size2 = list.size(), j = 0; j < size2; j++) {
-                list.get(j).onAttach();
+                list.get(j).onDetach();
             }
         }
     }

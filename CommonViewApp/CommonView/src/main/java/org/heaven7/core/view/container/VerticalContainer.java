@@ -4,8 +4,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.util.List;
-
 public class VerticalContainer extends MultiContainer {
 
     public VerticalContainer() {

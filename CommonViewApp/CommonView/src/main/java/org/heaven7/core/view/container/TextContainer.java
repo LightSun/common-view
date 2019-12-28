@@ -1,8 +1,5 @@
 package org.heaven7.core.view.container;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +48,13 @@ public class TextContainer extends BaseContainer {
             tv = view.findViewById(textViewId);
         }
         tv.setText(getText());
-        view.post(new Runnable() {
+    }
+    @Override
+    public void onDetach() {
+    }
+}
+//animate test ok on onAttach.
+/*view.post(new Runnable() {
             @Override
             public void run() {
                 view.animate()
@@ -83,9 +86,4 @@ public class TextContainer extends BaseContainer {
                             }
                         }).start();
             }
-        });
-    }
-    @Override
-    public void onDetach() {
-    }
-}
+        });*/

@@ -4,7 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class FixedSizeContainer implements Container {
+public class FixedSizeContainer implements Container {
+
     private final Container base;
     private final int width;
     private final int height;
@@ -14,7 +15,6 @@ public abstract class FixedSizeContainer implements Container {
         this.width = width;
         this.height = height;
     }
-
     @Override
     public View getView(ViewGroup parent, LayoutInflater layoutInflater) {
         View view = base.getView(parent, layoutInflater);
@@ -23,12 +23,14 @@ public abstract class FixedSizeContainer implements Container {
         lp.height = height;
         return view;
     }
-
+    @Override
+    public View getView() {
+        return base.getView();
+    }
     @Override
     public void onAttach() {
         base.onAttach();
     }
-
     @Override
     public void onDetach() {
         base.onDetach();
