@@ -1,5 +1,6 @@
 package org.heaven7.core.view.container;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,10 +21,10 @@ public class MultiContainer extends BaseContainer {
     }
 
     @Override
-    public View onCreateView(ViewGroup parent) {
+    protected View onCreateView(ViewGroup parent, LayoutInflater layoutInflater) {
         ViewGroup layout = createLayout(parent);
         for (Container cell : cells) {
-            layout.addView(cell.getView(layout));
+            layout.addView(cell.getView(layout, layoutInflater));
         }
         return layout;
     }

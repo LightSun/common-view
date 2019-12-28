@@ -3,8 +3,6 @@ package org.heaven7.core.view.container;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import org.heaven7.core.view.ContainerLayout;
-
 import java.util.List;
 
 import static android.widget.LinearLayout.HORIZONTAL;

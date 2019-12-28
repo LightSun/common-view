@@ -5,11 +5,9 @@ import android.widget.LinearLayout;
 
 import java.util.List;
 
-import static android.widget.LinearLayout.HORIZONTAL;
+public class VerticalContainer extends MultiContainer {
 
-public class RowContainer extends MultiContainer {
-
-    public RowContainer(List<Container> cells) {
+    public VerticalContainer(List<Container> cells) {
         super(cells);
     }
 
@@ -20,9 +18,8 @@ public class RowContainer extends MultiContainer {
     @Override
     protected ViewGroup createLayout(ViewGroup parent) {
         LinearLayout layout = new LinearLayout(parent.getContext());
-        layout.setOrientation(HORIZONTAL);
+        layout.setOrientation(LinearLayout.VERTICAL);
         layout.setLayoutParams(generateLayoutParams());
         return layout;
     }
-
 }

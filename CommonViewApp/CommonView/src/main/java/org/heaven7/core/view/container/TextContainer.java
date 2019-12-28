@@ -16,8 +16,8 @@ public abstract class TextContainer extends BaseContainer {
     }
 
     @Override
-    public View onCreateView(ViewGroup parent) {
-        return LayoutInflater.from(parent.getContext()).inflate(layoutId(), parent, false);
+    public View onCreateView(ViewGroup parent, LayoutInflater layoutInflater) {
+        return layoutInflater.inflate(layoutId(), parent, false);
     }
 
     @Override

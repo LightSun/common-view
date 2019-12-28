@@ -1,5 +1,6 @@
 package org.heaven7.core.view.container;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,8 +16,8 @@ public abstract class FixedSizeContainer implements Container {
     }
 
     @Override
-    public View getView(ViewGroup parent) {
-        View view = base.getView(parent);
+    public View getView(ViewGroup parent, LayoutInflater layoutInflater) {
+        View view = base.getView(parent, layoutInflater);
         ViewGroup.LayoutParams lp = view.getLayoutParams();
         lp.width = width;
         lp.height = height;

@@ -3,6 +3,7 @@ package org.heaven7.core.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -30,7 +31,7 @@ public class ContainerLayout extends LinearLayout {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ContainerLayout);
         try {
-            //TODO
+            //TODO\
         } finally {
             a.recycle();
         }
@@ -38,12 +39,12 @@ public class ContainerLayout extends LinearLayout {
 
     public ContainerLayout addChild(Container container) {
         mContainers.add(container);
-        addView(container.getView(this));
+        addView(container.getView(this, getLayoutInflater()));
         return this;
     }
     public ContainerLayout addChildAt(int index, Container container) {
         mContainers.add(index, container);
-        addView(container.getView(this), index);
+        addView(container.getView(this, getLayoutInflater()), index);
         return this;
     }
     public ContainerLayout clearChildren() {
@@ -63,7 +64,7 @@ public class ContainerLayout extends LinearLayout {
     public ContainerLayout addChildren(List<Container> containers) {
         mContainers.addAll(containers);
         for (Container container : containers){
-            this.addView(container.getView(this));
+            this.addView(container.getView(this, getLayoutInflater()));
         }
         return this;
     }
@@ -71,7 +72,7 @@ public class ContainerLayout extends LinearLayout {
     public void inflate() {
         for (int size = mContainers.size(), i = 0; i < size; i++) {
             Container container = mContainers.get(i);
-            this.addView(container.getView(this));
+            this.addView(container.getView(this, getLayoutInflater()));
         }
     }
 
@@ -102,6 +103,9 @@ public class ContainerLayout extends LinearLayout {
         // lazy detach occurs, it will receive invalid attach/detach sequencing.
         container.getView().clearAnimation();
         container.onDetach();
+    }
+    private LayoutInflater getLayoutInflater(){
+        return LayoutInflater.from(getContext());
     }
 
 }

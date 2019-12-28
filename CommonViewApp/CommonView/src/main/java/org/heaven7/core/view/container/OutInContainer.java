@@ -1,5 +1,6 @@
 package org.heaven7.core.view.container;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,14 +22,14 @@ public abstract class OutInContainer extends BaseContainer {
     protected abstract ViewGroup createInView(ViewGroup parent);
 
     @Override
-    public View onCreateView(ViewGroup parent) {
+    public View onCreateView(ViewGroup parent, LayoutInflater layoutInflater) {
         ViewGroup outView = createOutView(parent);
         for (int size1 = grid.size(), i = 0; i < size1; i++) {
             List<Container> list = grid.get(i);
             ViewGroup child = createInView(outView);
             for (int size2 = list.size(), j = 0; j < size2; j++) {
                 Container column = list.get(j);
-                child.addView(column.getView(child));
+                child.addView(column.getView(child, layoutInflater));
             }
             outView.addView(child);
         }
