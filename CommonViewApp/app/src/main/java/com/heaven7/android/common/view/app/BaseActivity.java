@@ -3,7 +3,8 @@ package com.heaven7.android.common.view.app;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 

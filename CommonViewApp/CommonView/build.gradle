@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+apply from : '../androidx_compat.gradle'
 
 group='com.github.LightSun'
 
@@ -29,5 +30,5 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+   // implementation 'com.android.support:appcompat-v7:28.0.0'
 }

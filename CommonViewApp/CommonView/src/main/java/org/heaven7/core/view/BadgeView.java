@@ -6,9 +6,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -22,7 +19,8 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TabWidget;
-import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * A simple text label view that can be applied as a "badge" to any given {@link View}.
@@ -467,9 +465,6 @@ public class BadgeView extends AppCompatTextView {
 		}
 		public void show(Animation anim){
 			view.show(anim);
-		}
-		public ViewPropertyAnimatorCompat animate(){
-			return ViewCompat.animate(view);
 		}
 	}
 

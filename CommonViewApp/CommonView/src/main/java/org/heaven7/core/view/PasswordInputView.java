@@ -7,10 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
-import android.widget.EditText;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 

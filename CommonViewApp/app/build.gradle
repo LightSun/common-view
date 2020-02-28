@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 apply from: "../common.gradle"
+apply from : '../androidx_compat.gradle'
 
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId "com.heaven7.android.common.view.app"
-        minSdkVersion 17
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -23,12 +24,14 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+   // implementation 'com.android.support:appcompat-v7:28.0.0'
 
     def butterknife = '8.4.0'
-    implementation "com.jakewharton:butterknife:${butterknife}"
+    implementation ("com.jakewharton:butterknife:${butterknife}"){
+        exclude group: ' com.android.support'
+    }
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife}"
-    implementation "com.jakewharton:butterknife-annotations:${butterknife}"
+    //implementation "com.jakewharton:butterknife-annotations:${butterknife}"
 
     implementation project(':CommonView')
 }
