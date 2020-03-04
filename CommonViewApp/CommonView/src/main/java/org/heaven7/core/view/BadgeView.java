@@ -26,7 +26,7 @@ import androidx.appcompat.widget.AppCompatTextView;
  * A simple text label view that can be applied as a "badge" to any given {@link View}.
  * This class is intended to be instantiated at runtime rather than included in XML layouts.
  */
-public class BadgeView extends AppCompatTextView {
+public final class BadgeView extends AppCompatTextView {
 
 	public static final int POSITION_TOP_LEFT = 1;
 	public static final int POSITION_TOP_RIGHT = 2;
@@ -441,6 +441,10 @@ public class BadgeView extends AppCompatTextView {
 		}
 		public Builder decrease(int offset){
 			view.decrement(offset);
+			return this;
+		}
+		public Builder setText(CharSequence text){
+			view.setText(text);
 			return this;
 		}
 		public Builder setTextSize(float size){
