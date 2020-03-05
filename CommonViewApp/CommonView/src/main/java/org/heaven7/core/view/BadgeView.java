@@ -22,6 +22,8 @@ import android.widget.TabWidget;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
+import java.lang.ref.WeakReference;
+
 /**
  * A simple text label view that can be applied as a "badge" to any given {@link View}.
  * This class is intended to be instantiated at runtime rather than included in XML layouts.
@@ -115,29 +117,34 @@ public final class BadgeView extends AppCompatTextView {
 		} else {
 			show();
 		}
-		
+	}
+
+	public void reset(CharSequence text){
+		setText(text);
+		if (this.target != null) {
+			applyTo(this.target);
+		} else {
+			show();
+		}
 	}
 
 	private void applyTo(View target) {
-		
 		LayoutParams lp = target.getLayoutParams();
 		ViewParent parent = target.getParent();
 		FrameLayout container = new FrameLayout(context);
 		
 		if (target instanceof TabWidget) {
-			
 			// set target to the relevant tab child container
 			target = ((TabWidget) target).getChildTabViewAt(targetTabIndex);
 			this.target = target;
 			
 			((ViewGroup) target).addView(container, 
-					new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+					new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			
 			this.setVisibility(View.GONE);
 			container.addView(this);
 			
 		} else {
-			
 			// TODO verify that parent is indeed a ViewGroup
 			ViewGroup group = (ViewGroup) parent; 
 			int index = group.indexOfChild(target);
@@ -151,9 +158,9 @@ public final class BadgeView extends AppCompatTextView {
 			container.addView(this);
 			
 			group.invalidate();
-			
 		}
-		
+		//mark the badge view
+		target.setTag(R.id.lib_cv_badge_view, new WeakReference<>(this));
 	}
 	
 	public void show() {
@@ -411,6 +418,16 @@ public final class BadgeView extends AppCompatTextView {
 		return (int) px;
 	}
 
+	public static Builder from(View target){
+		Object tag = target.getTag(R.id.lib_cv_badge_view);
+		if(tag instanceof WeakReference){
+			Object o = ((WeakReference) tag).get();
+            if(o instanceof BadgeView){
+            	return new Builder((BadgeView) o);
+			}
+		}
+		return new Builder(new BadgeView(target.getContext(),target));
+	}
 	public static Builder newBuilder(View target){
 		return new Builder(new BadgeView(target.getContext(),target));
 	}
