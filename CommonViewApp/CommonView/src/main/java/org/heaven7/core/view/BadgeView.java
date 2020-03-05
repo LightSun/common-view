@@ -418,17 +418,14 @@ public final class BadgeView extends AppCompatTextView {
 		return (int) px;
 	}
 
-	public static Builder from(View target){
+	public static Builder newBuilder(View target){
 		Object tag = target.getTag(R.id.lib_cv_badge_view);
 		if(tag instanceof WeakReference){
 			Object o = ((WeakReference) tag).get();
-            if(o instanceof BadgeView){
-            	return new Builder((BadgeView) o);
+			if(o instanceof BadgeView){
+				return new Builder((BadgeView) o);
 			}
 		}
-		return new Builder(new BadgeView(target.getContext(),target));
-	}
-	public static Builder newBuilder(View target){
 		return new Builder(new BadgeView(target.getContext(),target));
 	}
 

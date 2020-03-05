@@ -235,6 +235,16 @@ public class SlidingTabLayout extends HorizontalScrollView {
     }
 
     /**
+     * get the tab view for target index
+     * @param index the tab index
+     * @param <T> the view type
+     * @return the tab view.
+     * @since 1.2.4
+     */
+    public <T extends View> T getTabView(int index){
+        return (T) mTabStrip.getChildAt(index);
+    }
+    /**
      * Set the custom {@link TabColorizer} to be used.
      *
      * If you only require simple custmisation then you can use
@@ -482,7 +492,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
             if(mSelectPosition != position)
                 mSelectPosition = position;
         }
-
     }
 
     private class TabClickListener implements OnClickListener {
