@@ -88,7 +88,7 @@ public class TestSlidingTabLayoutActivity extends BaseActivity {
         mSlidingTabLayout.setCustomTabView(R.layout.tab_transport_bill, R.id.tv_tab);
         mSlidingTabLayout.setTabSelectDecoration(new SlidingTabLayout.TabSelectDecoration() {
             @Override
-            public void onDecorate(TextView title, boolean selected) {
+            public void onDecorate(TextView title, int position, boolean selected) {
                 int color = selected ? getResources().getColor(R.color.colorTheme)
                         :  getResources().getColor(R.color.colorSecond);
                 title.setTextColor(color);

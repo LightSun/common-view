@@ -226,12 +226,12 @@ public class SlidingTabLayout extends HorizontalScrollView {
         if(mTitleTextViews == null){
              for(int i=0,size = mTabStrip.getChildCount() ; i<size ;i++){
                  TextView child = (TextView) mTabStrip.getChildAt(i);
-                 mTabTitleDecoration.onDecorate(child, position == i);
+                 mTabTitleDecoration.onDecorate(child, i, position == i);
              }
         }else{
             for(int i=0,size = mTitleTextViews.size() ; i<size ;i++){
                 TextView child = mTitleTextViews.get(i);
-                mTabTitleDecoration.onDecorate(child, position == i);
+                mTabTitleDecoration.onDecorate(child, i, position == i);
             }
         }
     }
@@ -441,7 +441,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
             mTabStrip.addView(tabView);
             //default select 0
-            mTabTitleDecoration.onDecorate(tabTitleView, i == 0);
+            mTabTitleDecoration.onDecorate(tabTitleView, i, i == 0);
 
             if(mPopulateListener != null){
                 mPopulateListener.onPopulateTab(this, i, count ,tabView, tabTitleView);
@@ -637,9 +637,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
         /**
          * called on decorate the position.
          * @param title the title text view
+         * @param position the current position
          * @param selected true if the position of this tab is selected.
          */
-        void onDecorate(TextView title, boolean selected);
+        void onDecorate(TextView title, int position, boolean selected);
     }
 
     /**
@@ -656,7 +657,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             this.unselectTextColor = unselectTextColor;
         }
         @Override
-        public void onDecorate(TextView title, boolean selected) {
+        public void onDecorate(TextView title, int position, boolean selected) {
             title.setTextColor(selected ? selectTextColor : unselectTextColor);
         }
     }
