@@ -73,7 +73,7 @@ public class TestSlidingTabLayoutActivity extends BaseActivity {
         mSlidingTabLayout.setDrawBottomUnderLine(false);
         mSlidingTabLayout.setDrawHorizontalIndicator(true);
         mSlidingTabLayout.setSelectIndicatorHeight(DimenUtil.dip2px(activity, 2));
-        mSlidingTabLayout.setSelectRelativeTextColorsRes(R.color.colorTheme, R.color.colorSecond);
+      //  mSlidingTabLayout.setSelectRelativeTextColorsRes(R.color.colorTheme, R.color.colorSecond);
         mSlidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.AbsTabColorizer(activity) {
             @Override
             protected int getIndicatorColorRes(int position) {
@@ -86,16 +86,19 @@ public class TestSlidingTabLayoutActivity extends BaseActivity {
             }
         });
         mSlidingTabLayout.setCustomTabView(R.layout.tab_transport_bill, R.id.tv_tab);
+        mSlidingTabLayout.setTabSelectDecoration(new SlidingTabLayout.TabSelectDecoration() {
+            @Override
+            public void onDecorate(TextView title, boolean selected) {
+                int color = selected ? getResources().getColor(R.color.colorTheme)
+                        :  getResources().getColor(R.color.colorSecond);
+                title.setTextColor(color);
+                title.getPaint().setFakeBoldText(selected);
+            }
+        });
         mSlidingTabLayout.setOnPageChangeListener(new SlidingTabLayout.SlidingPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                //  Logger.d(TAG, "onPageSelected", "position = " + position);
-                mSlidingTabLayout.toogleSelect(position);
-                List<TextView> tvs = mSlidingTabLayout.getTitleTextViews();
-                for (int i = 0, size = tvs.size() ; i < size ; i ++){
-                    TextView tv = tvs.get(i);
-                    tv.getPaint().setFakeBoldText(i == position);
-                }
+                mSlidingTabLayout.toggleSelect(position);
             }
         });
         mSlidingTabLayout.setTabDecoration(new SlidingTabLayout.TabDecoration() {

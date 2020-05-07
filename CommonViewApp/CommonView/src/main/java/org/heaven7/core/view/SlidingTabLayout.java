@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -43,7 +44,7 @@ import java.util.List;
  * the user's scroll progress.
  * <p>
  * To use the component, simply add it to your view hierarchy. Then in your
- * {@link android.app.Activity} or {@link android.support.v4.app.Fragment} call
+ * {@link android.app.Activity} or Fragment call
  * {@link #setViewPager(ViewPager)} providing it the ViewPager this layout is being used for.
  * <p>
  * The colors can be customized in two ways. The first and simplest is to provide an array of colors
@@ -117,10 +118,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private OnInitTitleListener mInitTitleListener;
     private OnPopulateListener mPopulateListener;
 
-    private int mSelectTextColor;
-    private int mUnSelectTextColor;
     /** the select position */
     private int mSelectPosition;
+
+    private TabSelectDecoration mTabTitleDecoration;
 
     public SlidingTabLayout(Context context) {
         this(context, null);
@@ -193,6 +194,18 @@ public class SlidingTabLayout extends HorizontalScrollView {
         this.mPopulateListener = mPopulateListener;
     }
 
+    /**
+     * sey the tab title decoration
+     * @param tpd the tab title decoration
+     * @since 1.2.5
+     */
+    public void setTabSelectDecoration(TabSelectDecoration tpd){
+        if(tpd == null){
+            throw new NullPointerException();
+        }
+        this.mTabTitleDecoration = tpd;
+    }
+
     public void toggleSelect(int position) {
         toogleSelect(position);
     }
@@ -203,13 +216,13 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
         if(mTitleTextViews == null){
              for(int i=0,size = mTabStrip.getChildCount() ; i<size ;i++){
-                 ((TextView)mTabStrip.getChildAt(i)).setTextColor(position == i?
-                         mSelectTextColor : mUnSelectTextColor );
+                 TextView child = (TextView) mTabStrip.getChildAt(i);
+                 mTabTitleDecoration.onDecorate(child, position == i);
              }
         }else{
             for(int i=0,size = mTitleTextViews.size() ; i<size ;i++){
-                mTitleTextViews.get(i).setTextColor(position == i?
-                        mSelectTextColor : mUnSelectTextColor );
+                TextView child = mTitleTextViews.get(i);
+                mTabTitleDecoration.onDecorate(child, position == i);
             }
         }
     }
@@ -226,12 +239,12 @@ public class SlidingTabLayout extends HorizontalScrollView {
      * @param selectColor the color of select
      * @param unSelectColor the color of unselect*/
     public void setSelectRelativeTextColors(int selectColor, int unSelectColor) {
-        mSelectTextColor = selectColor;
-        mUnSelectTextColor = unSelectColor;
+        mTabTitleDecoration = new TabTextColorSelectDecoration(selectColor, unSelectColor);
     }
     public void setSelectRelativeTextColorsRes(int selectColorId, int unSelectColorId) {
-        mSelectTextColor = getContext().getResources().getColor(selectColorId);
-        mUnSelectTextColor = getContext().getResources().getColor(unSelectColorId);
+        mTabTitleDecoration = new TabTextColorSelectDecoration(
+                getContext().getResources().getColor(selectColorId),
+                getContext().getResources().getColor(unSelectColorId));
     }
 
     /**
@@ -294,6 +307,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
      */
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         mViewPagerPageChangeListener = listener;
+        setViewPagerInternal();
     }
 
     /**
@@ -316,12 +330,24 @@ public class SlidingTabLayout extends HorizontalScrollView {
         mTabStrip.removeAllViews();
 
         mViewPager = viewPager;
+        setViewPagerInternal();
         if (viewPager != null) {
             viewPager.addOnPageChangeListener(new InternalViewPagerListener());
             populateTabStrip();
         }
     }
+    public void setOnInitTitleListener(OnInitTitleListener mInitTitleListener) {
+        this.mInitTitleListener = mInitTitleListener;
+    }
 
+    private void setOnTabListener(OnTabListener l){
+        mInternalTabListener = l ;
+    }
+    private void setViewPagerInternal() {
+        if(mViewPagerPageChangeListener instanceof SlidingPageChangeListener){
+            ((SlidingPageChangeListener) mViewPagerPageChangeListener).setViewPager(mViewPager);
+        }
+    }
     /*
      * Create a default view to be used for tabs. This is called if a custom tab view is not set via
      * {@link #setCustomTabView(int, int)}.
@@ -405,9 +431,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
             tabView.setOnClickListener(tabClickListener);
 
             mTabStrip.addView(tabView);
-            if(mSelectTextColor != 0){
-                tabTitleView.setTextColor( i == 0 ? mSelectTextColor : mUnSelectTextColor);
-            }
+            //default select 0
+            mTabTitleDecoration.onDecorate(tabTitleView, i == 0);
+
             if(mPopulateListener != null){
                 mPopulateListener.onPopulateTab(this, i, count ,tabView, tabTitleView);
             }
@@ -466,8 +492,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 mViewPagerPageChangeListener.onPageScrolled(position, positionOffset,
                         positionOffsetPixels);
             }
-            /*if(mSelectPosition != position)
-                mSelectPosition = position;*/
         }
 
         @Override
@@ -489,9 +513,11 @@ public class SlidingTabLayout extends HorizontalScrollView {
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageSelected(position);
             }
-            if(mSelectPosition != position)
+            if(mSelectPosition != position){
                 mSelectPosition = position;
+            }
         }
+
     }
 
     private class TabClickListener implements OnClickListener {
@@ -505,13 +531,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 }
             }
         }
-    }
-    private void setOnTabListener(OnTabListener l){
-        mInternalTabListener = l ;
-    }
-
-    public void setOnInitTitleListener(OnInitTitleListener mInitTitleListener) {
-        this.mInitTitleListener = mInitTitleListener;
     }
 
     public interface OnTabListener{
@@ -533,16 +552,33 @@ public class SlidingTabLayout extends HorizontalScrollView {
     }
 
     public static abstract class SlidingPageChangeListener implements ViewPager.OnPageChangeListener{
-        boolean ignore;
+        WeakReference<ViewPager> mWeakVp;
+        boolean mIgnore;
+
+        public void setViewPager(ViewPager vp){
+            if(vp == null){
+                mWeakVp = null;
+            }else {
+                mWeakVp = new WeakReference<>(vp);
+            }
+        }
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if(!ignore){
+            if(!mIgnore){
+                //adjust position to avoid a bug.
+                if(mWeakVp != null){
+                    ViewPager vp = mWeakVp.get();
+                    if(vp != null){
+                        position = vp.getCurrentItem();
+                    }
+                }
+                //callback
                 onPageSelected(position);
             }
         }
         @Override
         public void onPageScrollStateChanged(int state) {
-            ignore = state == ViewPager.SCROLL_STATE_SETTLING;
+            mIgnore = state == ViewPager.SCROLL_STATE_SETTLING;
         }
     }
     public interface OnPopulateListener {
@@ -584,6 +620,37 @@ public class SlidingTabLayout extends HorizontalScrollView {
         boolean drawVerticalIndicator(Canvas canvas, ViewGroup tabStrip,  Paint dividerPaint, int separatorTop, int dividerHeightPx);
     }
 
+    /**
+     * the tab position decoration. used to decorate the target position on position changed.
+     * @since 1.2.5
+     */
+    public interface TabSelectDecoration{
+        /**
+         * called on decorate the position.
+         * @param title the title text view
+         * @param selected true if the position of this tab is selected.
+         */
+        void onDecorate(TextView title, boolean selected);
+    }
+
+    /**
+     * the text color impl for {@linkplain TabSelectDecoration}
+     * @since 1.2.5
+     */
+    public static class TabTextColorSelectDecoration implements TabSelectDecoration{
+
+        private final int selectTextColor;
+        private final int unselectTextColor;
+
+        public TabTextColorSelectDecoration(int selectTextColor, int unselectTextColor) {
+            this.selectTextColor = selectTextColor;
+            this.unselectTextColor = unselectTextColor;
+        }
+        @Override
+        public void onDecorate(TextView title, boolean selected) {
+            title.setTextColor(selected ? selectTextColor : unselectTextColor);
+        }
+    }
     /*
      *
      private void initSlidingTabLayout() {
