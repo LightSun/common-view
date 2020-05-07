@@ -26,6 +26,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.util.logging.Logger;
+
 
 class SlidingTabStrip extends LinearLayout implements SlidingTabLayout.OnTabListener {
 
@@ -56,11 +58,14 @@ class SlidingTabStrip extends LinearLayout implements SlidingTabLayout.OnTabList
     private final SimpleTabColorizer mDefaultTabColorizer;
 
     private boolean mDrawHorizontalIndicator = true;
-    private boolean mDrawVerticalIndicator ;
-     boolean mDrawBottomUnderline ;
+    private boolean mDrawVerticalIndicator;
+    boolean mDrawBottomUnderline;
 
-     private SlidingTabLayout.TabDecoration mTabDecoration;
-     private final Rect mTempRect = new Rect();
+    private SlidingTabLayout.TabDecoration mTabDecoration;
+    private final Rect mTempRect = new Rect();
+
+    private int mLimitMinPos = -1;
+    private int mLimitMaxPos = -1;
 
     SlidingTabStrip(Context context) {
         this(context, null);
@@ -74,7 +79,7 @@ class SlidingTabStrip extends LinearLayout implements SlidingTabLayout.OnTabList
         // get the theme attr value.
         TypedValue outValue = new TypedValue();
         context.getTheme().resolveAttribute(android.R.attr.colorForeground, outValue, true);
-        final int themeForegroundColor =  outValue.data;
+        final int themeForegroundColor = outValue.data;
 
         mDefaultBottomBorderColor = setColorAlpha(themeForegroundColor,
                 DEFAULT_BOTTOM_BORDER_COLOR_ALPHA);
@@ -105,12 +110,15 @@ class SlidingTabStrip extends LinearLayout implements SlidingTabLayout.OnTabList
         mCustomTabColorizer = customTabColorizer;
         invalidate();
     }
-    void setDrawHorizontalIndicator(boolean drawHorizontalIndicator){
+
+    void setDrawHorizontalIndicator(boolean drawHorizontalIndicator) {
         this.mDrawHorizontalIndicator = drawHorizontalIndicator;
     }
-    void setDrawVerticalIndicator(boolean drawVerticalIndicator){
+
+    void setDrawVerticalIndicator(boolean drawVerticalIndicator) {
         this.mDrawVerticalIndicator = drawVerticalIndicator;
     }
+
     void setSelectedIndicatorColors(int... colors) {
         // Make sure that the custom colorizer is removed
         mCustomTabColorizer = null;
@@ -125,7 +133,28 @@ class SlidingTabStrip extends LinearLayout implements SlidingTabLayout.OnTabList
         invalidate();
     }
 
+    void setLimitPositions(int minPos, int maxPos){
+        this.mLimitMinPos = minPos;
+        this.mLimitMaxPos = maxPos;
+    }
+
     void onViewPagerPageChanged(int position, float positionOffset) {
+        System.out.println("Sliding: >>> pos = " + position + " ,offset = " + positionOffset);
+        //use limit min and max position to make visible title count less than max.
+        if(mLimitMinPos >=0 && position < mLimitMinPos){
+            //limit min
+            position = mLimitMinPos;
+            positionOffset = 0;
+        }else{
+            //limit max
+            if(mLimitMaxPos >=0 ){
+                if(position == mLimitMaxPos && positionOffset > 0){
+                    positionOffset = 0;
+                }else if(position > mLimitMaxPos){
+                    position = mLimitMaxPos;
+                }
+            }
+        }
         mSelectedPosition = position;
         mSelectionOffset = positionOffset;
         invalidate();
@@ -160,17 +189,17 @@ class SlidingTabStrip extends LinearLayout implements SlidingTabLayout.OnTabList
                         (1.0f - mSelectionOffset) * right);
             }
             //bottom indicator
-            if(mDrawHorizontalIndicator) {
+            if (mDrawHorizontalIndicator) {
                 mTempRect.set(left, height - mSelectedIndicatorThickness, right, height);
                 mSelectedIndicatorPaint.setColor(color);
-                if(mTabDecoration == null || !mTabDecoration.drawHorizontalIndicator(canvas, mSelectedIndicatorPaint, mTempRect)){
+                if (mTabDecoration == null || !mTabDecoration.drawHorizontalIndicator(canvas, mSelectedIndicatorPaint, mTempRect)) {
                     canvas.drawRect(left, height - mSelectedIndicatorThickness, right,
                             height, mSelectedIndicatorPaint);
                 }
                 // Thin underline along the entire bottom edge
-                if(mDrawBottomUnderline) {
+                if (mDrawBottomUnderline) {
                     mTempRect.set(0, height - mBottomBorderThickness, getWidth(), height);
-                    if(mTabDecoration == null || !mTabDecoration.drawBottomUnderline(canvas, mBottomBorderPaint, mTempRect)){
+                    if (mTabDecoration == null || !mTabDecoration.drawBottomUnderline(canvas, mBottomBorderPaint, mTempRect)) {
                         canvas.drawRect(0, height - mBottomBorderThickness, getWidth(), height, mBottomBorderPaint);
                     }
                 }
@@ -178,10 +207,10 @@ class SlidingTabStrip extends LinearLayout implements SlidingTabLayout.OnTabList
         }
 
         // Vertical separators between the titles
-        if(mDrawVerticalIndicator) {
+        if (mDrawVerticalIndicator) {
             final int dividerHeightPx = (int) (Math.min(Math.max(0f, mDividerHeight), 1f) * height);
             int separatorTop = (height - dividerHeightPx) / 2;
-            if(mTabDecoration == null || !mTabDecoration.drawVerticalIndicator(canvas, this, mDividerPaint, separatorTop, dividerHeightPx)){
+            if (mTabDecoration == null || !mTabDecoration.drawVerticalIndicator(canvas, this, mDividerPaint, separatorTop, dividerHeightPx)) {
                 for (int i = 0; i < childCount - 1; i++) {
                     View child = getChildAt(i);
                     mDividerPaint.setColor(tabColorizer.getDividerColor(i));
@@ -214,7 +243,7 @@ class SlidingTabStrip extends LinearLayout implements SlidingTabLayout.OnTabList
     }
 
     @Override
-    public void onScroll(int tabIndex, int positionOffset,int targetScrollX) {
+    public void onScroll(int tabIndex, int positionOffset, int targetScrollX) {
         //mRoundLeftX =  getChildAt(tabIndex).getLeft() + positionOffset + mPaddingLeftRight;
     }
 

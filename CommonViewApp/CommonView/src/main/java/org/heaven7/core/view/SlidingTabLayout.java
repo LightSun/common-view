@@ -195,6 +195,15 @@ public class SlidingTabLayout extends HorizontalScrollView {
     }
 
     /**
+     * set limit positions
+     * @param minPos the min position
+     * @param maxPos the max position.
+     * @since 1.2.5
+     */
+    public void setLimitPositions(int minPos, int maxPos){
+        mTabStrip.setLimitPositions(minPos, maxPos);
+    }
+    /**
      * sey the tab title decoration
      * @param tpd the tab title decoration
      * @since 1.2.5
