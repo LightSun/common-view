@@ -139,7 +139,7 @@ class SlidingTabStrip extends LinearLayout implements SlidingTabLayout.OnTabList
     }
 
     void onViewPagerPageChanged(int position, float positionOffset) {
-        System.out.println("Sliding: >>> pos = " + position + " ,offset = " + positionOffset);
+        //System.out.println("Sliding: >>> pos = " + position + " ,offset = " + positionOffset);
         //use limit min and max position to make visible title count less than max.
         if(mLimitMinPos >=0 && position < mLimitMinPos){
             //limit min
